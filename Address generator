@@ -1,0 +1,76 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+void pm();
+void plus();
+void divop();
+
+int i, ch, j, l;
+char ex[20], exp[20], exp1[20];
+int addr = 100;
+
+int main() {
+    while (1) {
+        printf("\n1. Arithmetic Expression\n2. Exit\nEnter your choice: ");
+        scanf("%d", &ch);
+        switch (ch) {
+            case 1:
+                printf("\nEnter the expression with arithmetic operators: ");
+                scanf("%s", ex);
+                strcpy(exp, ex);
+                l = strlen(exp);
+                exp1[0] = '\0';
+                
+                for (i = 0; i < l; i++) {
+                    if (exp[i] == '+' || exp[i] == '-') {
+                        if (exp[i+2] == '/' || exp[i+2] == '*')
+                            pm();
+                        else
+                            plus();
+                        break;
+                    } else if (exp[i] == '/' || exp[i] == '*') {
+                        divop();
+                        break;
+                    }
+                }
+                break;
+
+            case 2:
+                exit(0);
+        }
+    }
+    return 0;
+}
+
+void pm() {
+    // Handles expressions like a+b*c or a-b*c
+    char temp[10];
+    strcpy(temp, exp);
+    strrev(temp);
+    j = l - i - 1;
+    strncpy(exp1, temp, j);
+    exp1[j] = '\0';
+    strrev(exp1);
+    printf("\nThree Address Code:\n");
+    printf("temp = %s\n", exp1);
+    printf("temp1 = %c %c temp\n", exp[j+1], exp[j]);
+}
+
+void divop() {
+    // Handles expressions with / or *
+    strncpy(exp1, exp, i+2);
+    exp1[i+2] = '\0';
+    printf("\nThree Address Code:\n");
+    printf("temp = %s\n", exp1);
+    printf("temp1 = temp %c %c\n", exp[i+2], exp[i+3]);
+}
+
+void plus() {
+    // Handles expressions with + or -
+    strncpy(exp1, exp, i+2);
+    exp1[i+2] = '\0';
+    printf("\nThree Address Code:\n");
+    printf("temp = %s\n", exp1);
+    printf("temp1 = temp %c %c\n", exp[i+2], exp[i+3]);
+}
